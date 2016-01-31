@@ -1,10 +1,29 @@
 {%super={"parent":"./base.tirpitz"}%}
-{%override={"id":"title"}%}Liu Menghan's Blog{%/override}
-{%override={"id":"style"}%}{%/override}
-{%override={"id":"main"}%}
-<
-{%/override}
-{%override={"id":"title"}%}Liu Menghan's Blog{%/override}
-{%override={"id":"title"}%}Liu Menghan's Blog{%/override}
+	{%override={"id":"style"} %}
+<style>
+.blog{
+	margin: 0 12em 0 12em;
+}
+.blog .list .item .publishTime{
+	font-style: italic;
+	font-size: 0.75em;
+}
+
+.blog .list .item{
+	font-size: 1.2em;
+	font-family: Montserrat, sans-serif;
+	margin:0.3em 0 0.3em 0;
+}
+</style>
+	{%/override%}
+	{%override={"id":"title"} %}寒歌のBlog{%/override%}
+	{%override={"id":"main"} %}
+<div id="blogs" class="blog">
+	<ul class="list">
+		<li class="item"><a href="{%variable={"key":"basePath"}  /%}/blog/GroovyLanguageDocumentation.html" class="link">Groovy中文文档</a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="publishTime">2016-01-31</span></li>
+		<li class="item"><a href="{%variable={"key":"basePath"}  /%}/blog/GroovyLanguageDocumentationIndex.html" class="link">Groovy中文文档(目录)</a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="publishTime">2016-01-31</span></li>
+	<ul>
+</div>
+	{%/override%}
 {%/super%}
 

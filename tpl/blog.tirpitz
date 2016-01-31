@@ -1,0 +1,14 @@
+{%super={"parent":"./base.tirpitz"}%}
+	{%override={"id":"style"} %}
+<style>
+</style>
+	{%/override%}
+	{%override={"id":"title"} %}{%replacable={"id":"title"} /%}{%/override%}
+	{%override={"id":"main"} %}
+<div id="content" class="content">
+	{%markdown%}
+	{%replacable={"id":"markdown"} /%}
+	{%/markdown%}
+</div>
+	{%/override%}
+{%/super%}

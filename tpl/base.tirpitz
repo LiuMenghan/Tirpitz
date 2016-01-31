@@ -1,12 +1,36 @@
+<!DOCTYPE html>
 <html>
 	<head>
-	<title>{%replacable={"id":"title" /%}
+	<meta charset="UTF-8">
+	<title>{%replacable={"id":"title"} /%}</title>
+	<style>
+.zebra{
+	margin : 0;
+	padding : 0;
+}
+.banner{
+	font-size:2em;
+	font-family:"Varela Round",sans-serif;
+	color:#FFFFFF;
+	background-color: #34302d;
+}
+.banner .icon{
+	height : 1.5em;
+	vertical-align:middle;
+	margin:0.25em 0.8em 0.25em 1em;
+}
+.copyright{
+	font-size:0.5em;
+	text-align:center;
+	color:#767676;
+}
+	</style>
 {%replacable={"id":"style"} /%}
 	</head>
-	<body>
-		<div id="banner"><img src="{%variable={'key':'basePath'}/%}/img/HeadPortrait.jpg" />寒歌のBlog</div>
+	<body class="zebra">
+		<div id="banner" class="banner"><img class="icon" src="{%variable={"key":"basePath"}/%}/img/HeadPortrait.jpg" />寒歌のBlog</div>
 {%replacable={"id":"main"} /%}
-		<div id="copyright" class="copyright">©{%variable={'key':'year'} /%}&nbsp;&nbsp;&nbsp;&nbsp;刘梦晗&nbsp;&nbsp;&nbsp;&nbsp;{%variable={'key'='date'} /%}</div>
+		<div id="copyright" class="copyright">&copy;{%variable={"key":"year"} /%}&nbsp;&nbsp;&nbsp;&nbsp;刘梦晗&nbsp;&nbsp;&nbsp;&nbsp;{%variable={"key":"date"} /%}</div>
 	</body>
 {%replacable={"id":"script"} /%}
 </html>
