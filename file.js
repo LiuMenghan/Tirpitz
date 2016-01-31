@@ -77,9 +77,13 @@ for(var file in records){
 	}
 }
 
+var variables = {
+	"date" : new Date().toLocaleDateString()
+}
+
 buildList.forEach(function(tplPath){
 	var buildPath = getBuildPath(tplPath);
-	engine.render(tplPath, buildPath);
+	engine.render(tplPath, buildPath, variables);
 });
 
 function getBuildPath(tplPath){
