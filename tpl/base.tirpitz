@@ -1,0 +1,12 @@
+<html>
+	<head>
+	<title>{%replacable={"id":"title" /%}
+{%replacable={"id":"style"} /%}
+	</head>
+	<body>
+		<div id="banner"><img src="{%variable={'key':'basePath'}/%}/img/HeadPortrait.jpg" />寒歌のBlog</div>
+{%replacable={"id":"main"} /%}
+		<div id="copyright" class="copyright">©{%variable={'key':'year'} /%}&nbsp;&nbsp;&nbsp;&nbsp;刘梦晗&nbsp;&nbsp;&nbsp;&nbsp;{%variable={'key'='date'} /%}</div>
+	</body>
+{%replacable={"id":"script"} /%}
+</html>

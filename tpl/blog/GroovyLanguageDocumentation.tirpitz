@@ -1,0 +1,213 @@
+{%markdown%}
+#Groovy Language Documentation:cn:
+
+***
+
+#<a name="translation" />写在前面的自娱自乐Q&A</a>
+Q:为啥要翻译Groovy-doc啊?
+A:前两天某新鲜出炉的编程语言流行排行榜上Groovy刚上升到15位，而处于前十名的都是Java、C、C++之类经久不衰的语言。同时我们看到，无论是gradle的流行，以及spring.io上越来越多的demo和test case都在使用Groovy编写，似乎都在验证Groovy是一门比Java开发效率更高的语言，Groovy可能会更加流行，也许在不久的Groovy就可以比肩他的前辈们了。
+*我才不会说其实是因为我实在太闲。。。*
+Q：翻译质量如何啊？
+A：当然会尽自己所能保证翻译的准确性,可能有问题的地方我都会标注英文原文，当然有些用英文比用中文更好的地方我就直接用英文啦，，当然指望我老老实实的翻译是不现实的，所以估计会看到大量的吐槽、私货和表情:flushed::flushed::flushed:
+
+***
+
+#<a name="introduction" />简介</a>
+Groovy...
+-是基于JVM一门敏捷、动态的语言
+-基于Java，具有Java的强大之处，但额外借鉴了其它语言（如Python、Ruby、Smalltalk）的强大特性
+*直接运行在JVM之上、生成的文件同样是编译成为.class文件完全看不出任何区别，把Java迁移到Groovy只需要改个文件扩展名。。。所以放心大胆地用Java的语法写Groovy吧。。。至于“强大特性”？慢慢学呗，能用多少用多少呗，用上了就赚，用不上也没亏。。。*
+-使Java开发者可以以近乎于0的学习成本使用现代语言特性
+*如果学习如何修改文件扩展名也算是学习成本的一部分的话。。。*
+-可以静态类型检查和静态编译，从而提升代码的健壮性、和性能
+*作为运行时动态语言的坚决反对者，我的观点一向是编写的时候是动态语言，在编译之后成为静态语言，然后以静态语言的效率在生产环境运行。动态语言的开发效率会高很多，但是运行时和静态语言的运行效率相比一般要至少差出一个数量级以上，而仔细分析好像在实际上运行的时候鲜少真的需要所谓的动态特性（反射算静态），归根结底我们其实需要的是一门可以像动态语言一样开发的静态语言罢了。。。*
+-支持DSL和其它语法，从而让你的代码容易阅读和维护
+*老实讲，我觉得Groovy写的DSL对于没有编程基础的人来说仍然不是易于阅读和维护的，但至少比java和xml配置文件什么的已经强上太多*
+-具有强大的处理原语(processing primitives)，面向对象能力和Ant DSL，使编写shell、构建脚本变得容易
+*我觉得在这个Linux都自带python的世界里用Groovy写脚本可能并不是一个特别好的主意，毕竟有多少机器上安装了GDK呢？另外processing primitives怎么翻译？求指导*
+-通过减少开发web、GUI、数据库、控制台应用时的结构性代码，提高开发者的生产效率
+*我觉得我eclipse用的最多的快捷键绝对是`Alt + shift + s`，getters&setters、toString、构造函数，想想都蛋疼。。。虽然IDE可以帮忙生成这些代码，但是谁说自动生成的代码就不需要维护的？维护成本永远高于开发成本，而这些代码完全可以在编译的时候由编译器自动生成吧。。。*
+-通过单元测试和开箱mock（mocking out-of-the-box)简化测试
+*Groovy初始化对象比Java方便许多，所以在需要经常性初始化mock对象的测试中很方便；另外Groovy的assert要比Java好用很多，这也是为什么越来越多的单元测试都使用Groovy编写的原因吧*
+-无缝集成所有已有的Java类和lib
+*编译完了和Java一样都是.class。Java可以无缝集成Java，这不废话吗。。。*
+-直接编译成Java字节码，所以你可以在任何可以使用Java的地方使用Groovy
+*这句话可能并不是%100准确，比如Android的构建现在已经广泛使用gradle，但是好像没听说哪个APP是用Groovy写的*
+
+***
+
+#{%chapter={"level" : 1, "idx" : 1}%}Groovy语言特性(Groovy Language Specification)
+
+***
+
+##{%chapter%}语法(Syntax)
+本章包括Groovy程序语言的语法。Groovy的语法源于Java语法，但通过面向Groovy的特殊构建对Java语法进行了提升，同时允许一定的简化。
+
+***
+
+###{%chapter/%}注释(Comments)
+*除了Shebang行其它和Java毫无区别，我有预感“和Java毫无区别”这几个字会重复无数遍*
+
+####单行注释(Single line comment)
+单行注释以`//`开始并且可以放置在一行中的任何位置。`//`后直到行尾的所有字符都会被看作是注释的一部分。
+```
+// a standalone single line comment
+println "hello" // a comment till the end of the line
+```
+
+####多行注释(Multiline Comment)
+多行注释以`/*`开头并且可以放置在一行中的任意位置。`/*`后直到`*/`之间所有的字符(包括换行符)都会被认为是注释。多行注释因此可以被放置声明结束结束的地方，甚至是在声明之中。
+```
+/* a standalone multiline comment
+   spanning two lines */
+println "hello" /* a multiline comment starting
+                   at the end of a statement */
+println 1 /* one */ + 2 /* two */
+```
+
+####GroovyDoc注释(GroovyDoc comment)
+*没看出和JavaDoc注释有半毛钱区别，然而改了个名字。。。*
+和多行注释类似，GroovyDoc注释是多行的，但是以`/**`开始，以`*/`结束。在第一个GroovyDoc注释后面的行可以选择以`*`开始，这些注释会关联:
+-类型定义(class,interface,enum,annotation)
+-field和property定义
+-method定义
+尽管编译器编译以上内容时即使没有GroovyDoc注释也可以，您还是应该在上面这些定义之前加入您的GroovyDoc。
+```
+/**
+ * A Class description
+ */
+class Person {
+    /** the name of the person */
+    String name
+
+    /**
+     * Creates a greeting method for a certain person.
+     *
+     * @param otherPerson the person to greet
+     * @return a greeting message
+     */
+    String greet(String otherPerson) {
+       "Hello ${otherPerson}"
+    }
+}
+```
+GroovyDoc遵顼与JavaDoc相同的约定，所以你可以像使用JavaDoc一样使用同样的标签。
+
+####Shebang line
+除了单行注释外，还有一种特殊的行注释叫shebang line。如果安装了Groovy运行环境且`Path`中有`groovy`命令，shebang line可以让groovy程序直接通过命令行执行
+```
+#!/usr/bin/env groovy
+println "Hello from the shebang line"
+```
+**__`#`必须是文件的首个字符，否则编译时会报错。__**
+
+***
+
+###keyword
+以下是所有Groovy语言的Keyword
+- as
+- assert
+- break
+- case
+- catch
+- class
+- const
+- continue
+- def
+- default
+- do
+- else
+- enum
+- extends
+- false
+- finally
+- for
+- goto
+- if
+- implements
+- import
+- in
+- instanceof
+- interface
+- new
+- null
+- package
+- return
+- super
+- switch
+- this
+- throw
+- throws
+- trait
+- true
+- try
+- while
+*这里面比Java多了as和trait两个关键字*
+
+***
+
+###identifier
+
+####普通identifiers
+identifier以字母、`$`或者下划线开始，不能以数字开始。
+字母可以包括以下:
+- 'a'到'z'(小写ascii字母)
+- 'A'到'Z'(大写ascii字母)
+- '\\u00C0'到'\\u00D6'
+- '\\u00D8'到'\\u00F6'
+- '\\u00F8'到'\\u00FF'
+- '\\u0100'到'\\uFFFE'
+非首字母可以包括字母和数字
+下面是一些合法的identifier例子(此处以变量为例):
+```
+def name
+def item3
+def with_underscore
+def $dollarStart
+```
+下面是不合法的identifier:
+```
+def 3tier
+def a+b
+def a#b
+```
+所有的keyword在`.`后面也是合法的identifier:
+```
+foo.as
+foo.assert
+foo.break
+foo.case
+foo.catch
+```
+
+####Quoted identifier
+
+Quoted identifier在dotted expression的`.`之后出现。比如，`person.name`表达式中的`name`可以加引号写成`person."name"`或者`person.'name'`。有些字符被Java语言特性禁止，但是Groovy在使用引号时允许，这个时候quoted identifier尤其有用，如减号、空格、感叹号等。
+```
+def map = [:]
+
+map."an identifier with a space and double quotes" = "ALLOWED"
+map.'with-dash-signs-and-single-quotes' = "ALLOWED"
+
+assert map."an identifier with a space and double quotes" == "ALLOWED"
+assert map.'with-dash-signs-and-single-quotes' == "ALLOWED"
+```
+在<a href="#Strings">String</a>中Groovy提供了多种类型的String，所有类型的String都可以在`.`之后：
+```
+map.'single quote'
+map."double quote"
+map.'''triple single quote'''
+map."""triple double quote"""
+map./slashy string/
+map.$/dollar slashy string/$
+```
+普通字符串和GString有一点不同，后者会将字符串表达式中的变量进行替换:
+```
+def firstname = "Homer"
+map."Simson-${firstname}" = "Homer Simson"
+
+assert map.'Simson-Homer' == "Homer Simson"
+```
+{%/chapter%}{%/chapter%}
+{%/markdown%}
+

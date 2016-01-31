@@ -1,6 +1,6 @@
 var engine = require('Tirpitz')({
 	tplPath : './tpl',
-	buildPath : './build',
+	buildPath : './../master',
 });
 engine.parser.handler = require('./node_modules/Tirpitz/lib/handler/fileHandler.js');
 

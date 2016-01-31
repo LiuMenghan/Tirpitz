@@ -1,0 +1,10 @@
+{%super={"parent":"./base.tirpitz"}%}
+{%override={"id":"title"}%}Liu Menghan's Blog{%/override}
+{%override={"id":"style"}%}{%/override}
+{%override={"id":"main"}%}
+<
+{%/override}
+{%override={"id":"title"}%}Liu Menghan's Blog{%/override}
+{%override={"id":"title"}%}Liu Menghan's Blog{%/override}
+{%/super%}
+
