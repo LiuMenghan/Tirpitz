@@ -1,0 +1,11 @@
+Text before outer tag.
+{%outer%}
+	Text before inner tag.
+	{%inner%}	
+		Text before single tag.
+		{%single/%}
+		Text after single tag.
+	{%/inner%}	
+	Text after inner tag.
+{%/outer%}
+Text after outer tag.

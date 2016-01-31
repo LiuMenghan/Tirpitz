@@ -1,0 +1,7 @@
+Child text before super.
+{%super={"parent":"./super.tirpitz"}%}
+	{%override={"id":"replacer0"}%}Text in child replacer0.{%/override%}
+	{%override={"id":"replacer1"}%}Text in child replacer1.{%/override%}
+{%/super%}
+Child text after super.
+	

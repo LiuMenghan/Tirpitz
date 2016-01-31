@@ -1,0 +1,12 @@
+{
+  "name": "Tirpitz-demo",
+  "version": "1.0.0",
+  "description": "template engine",
+  "main": "index.js",
+  "author": "Liu Menghan",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.0",
+	"Tirpitz" : "0.0.1"
+  }
+}
