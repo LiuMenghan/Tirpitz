@@ -3,7 +3,7 @@ Text before outer tag.
 	Text before inner tag.
 	{%inner%}	
 		Text before single tag.
-		{%single/%}
+		{%variable={"key":"date"} /%}
 		Text after single tag.
 	{%/inner%}	
 	Text after inner tag.

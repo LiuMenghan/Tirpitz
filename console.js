@@ -5,9 +5,13 @@ var engine = require('Tirpitz')({
 	afterInterceptorsFileNames : ['./interceptor/demoInterceptor.js']
 });
 
+var d = new Date();
 
-//engine.render('example.tirpitz', console);
-engine.render('inheritance/child.tirpitz', console);
+var variables = {
+	date : d.toLocaleDateString()
+};
+engine.render('example.tirpitz', console, variables);
+//engine.render('inheritance/child.tirpitz', console);
 
 
 
