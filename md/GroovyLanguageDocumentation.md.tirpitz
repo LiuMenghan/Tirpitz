@@ -98,7 +98,7 @@ GroovyDoc遵顼与JavaDoc相同的约定，所以你可以像使用JavaDoc一样
 #!/usr/bin/env groovy
 println "Hello from the shebang line"
 ```
-**__`#`必须是文件的首个字符，否则编译时会报错。__**
+__`#`必须是文件的首个字符，否则编译时会报错。__
 
 ***
 
@@ -208,3 +208,165 @@ map."Simson-${firstname}" = "Homer Simson"
 assert map.'Simson-Homer' == "Homer Simson"
 ```
 
+***
+
+##1.1.4 字符串
+
+以一串字母形式表示的文本文字被称作字符串。Groovy可以让你初始化`java.lang.String`对象，或者GString(`groovy.lang.GString`)(在其他语言中的被称作插值替换字串)
+
+### 单引号字符串
+
+但银行字符串是一系列被单引号包围的字符:
+```
+'a single quoted string'
+```
+__单引号字符串就是`java.lang.String`，不支持插值替换__
+*于是Groovy里面好像就没有char这个类型，不过好像char在实际工作中的功能也就是String的子集？*
+
+###字符串连接
+
+所有的Groovy字符串都可以用+连接
+```
+assert 'ab' == 'a' + 'b'
+```
+*虽然Java里经常这么写，但是Groovy中可能用处并不大。字符串拼接个人认为通常有两种情况，与逻辑无关的固定格式的拼装和与逻辑相关的字符串拼装。前者使用GString明显更好，后者使用StringBuffer或者StringBuilder好一些。*
+
+###三单引号字符串
+
+三单引号字符串是一系列被三个单引号包围的字符:
+```
+'''a triple single quoted string'''
+__三单引号字符串就是`java.lang.String`，不支持插值替换__
+三单引号是多行的，你可以让你的内容跨越多行而不需要把字符串拆成多个片段，不需要连接符(contatenation)或者转义换行符。
+*我猜contatenation可能是拼写错了，应该拼写成concatenation*
+如果你的代码是缩进的，比如class中的方法体,你的字符串会包含缩进符的空白。Groovy Development Kit(GDK)含有去除缩进的方法——`String#stripIdent()`,使用该方法可以使用定界符来去除行开始之前的缩进。
+当我们创建如下字符串:
+```
+def startingAndEndingWithANewline = '''
+line one
+line two
+line three
+'''
+```
+你会注意到结果字符串包含有一个换行字符作为首字符。可以使用反斜线跳过换行符:
+```
+def strippedFirstNewline = '''\\
+line one
+line two
+line three
+'''
+```
+
+####特殊转义字符
+
+可以使用反斜线转义单引号避免结束字符串文字:
+```
+'an escaped single quote: \\' needs a backslash'
+```
+可以使用两个反斜线转义转义字符:
+```
+'an escaped escape character: \\\\ needs a double backslash'
+```
+一些特殊字符也使用反斜线作为转义字符
+<table>
+	<tr>
+		<td>Escape sequence</td>
+		<td>Character</td>
+	</tr>
+	<tr>
+		<td>'\\t'</td>
+		<td>制表符</td>
+	</tr>
+	<tr>
+		<td>'\\b'</td>
+		<td>退格</td>
+	</tr>
+	<tr>
+		<td>'\\n'</td>
+		<td>换行</td>
+	</tr>
+	<tr>
+		<td>'\\r'</td>
+		<td>回车</td>
+	</tr>
+	<tr>
+		<td>'\\f'</td>
+		<td>换页符</td>
+	</tr>
+	<tr>
+		<td>'\\\\'</td>
+		<td>反斜线</td>
+	</tr
+	<tr>
+		<td>'\\''</td>
+		<td>单引号(对于单引号和三单引号字符串)</td>
+	</tr>
+	<tr>
+		<td>'\\"'</td>
+		<td>双引号(对于双引号和三双引号字符串)</td>
+	</tr>
+</table>
+
+####Unidcode转义字符
+
+对于键盘上没有的字符，可以只用unicode转义字符:一个反斜线、'u'、4个人十六进制数字
+比如欧元符号可以这样表示:
+```
+'The Euro currency symbol: \\u20AC'
+```
+
+###双引号字符串
+
+双引号字符串是一系列由双引号包含的字符
+```
+"a double quoted string:
+```
+__如果没有插值表达式，双引号字符串是`java.lang.String`；如果有，是`groovy.lang.GString`。__
+
+####字符串插值
+任何Groovy表达式都可以被用在除单引号字符串和三单引号字符串外来作字符串插值。将字符串中的占位符替换成相应的值的行为叫做插值。占位符表达式用`${}`包围或以`$`为前缀。当把GString作为参数传递给一个方法时，占位符中的表达式会被通过调用`toString()`替换成相应的值。
+*这段话的意思并不是说GString只有当传递给某方法时才会确定他的值，而是说当方法传递参数时会自动对GString进行替换。GString的值在GString出现的时候就已经应该确定并成为普通的String了。可以看译者下面写的例子：*
+*^o^译者代码的分割线^o^*
+```
+def name = 'world';
+def str = "Hello ${name}!";
+name = 'Liu Menghan'
+assert str == 'Hello world!';
+assert  "Hello ${name}!" == 'Hello Liu Menghan!'
+```
+*^o^译者代码的分割线^o^*
+除了`${}`占位符之外，我们也可以用单独的`$`符号作为一个dotted expression的前缀:
+```
+def person = [name: 'Guillaume', age:36]
+assert "$person.name is $person.age years old" == 'Guillaume is 36 years old'
+```
+但是只有`a.b`，`a.b.v`等形式是有效的，包含括号的形式（方法调用、闭包调用、运算符）是无效的。给一个如下的数字定义:
+```
+def number = 3.14
+```
+下面的描述会抛出一个`groovy.lang.MissingPropertyException`，因为Groovy会认为你在试图获取一个数字的toString属性，但是这个属性并不存在。
+```
+shouldFail(MissingPropertyException){
+	println "$number.toString()"
+}
+```
+__你可以把`"$number.toString()"`理解成`"${number.toString}()"`__
+*囧*
+如果你需要转义GString中`$`或者`${}`占位符，从而让他们不以插值的形式出现，你只需要使用`\\\\`反斜线字符来转移美元符号:
+```
+assert '${name}' == "\${name}"
+```
+*请注意单双引号，请注意单双引号，请注意单双引号。重要的事情说三遍。*
+
+####转义闭包(Closure)时的特殊情况
+
+*闭包是Groovy和Java最大的差别之一，有<a href="#Closures">闭包</a>一章中会专门探讨。虽然闭包本身是一个值得大吹特吹的特性，但是我不觉得在字符串插值中使用闭包（尤其是复杂闭包）是一个好主意。在Java8推出lambda表达式之前Groovy可以全兼容Java语法，推出之后除了一点点问题——因为closure和lambda冲突了。实际上无论是closure还是lambda都是借鉴于其它语言，实现的目的都是函数式编程，但相对于closure而言，Java8为了不对虚拟机做大的修改，实际上只实现了closure很小的一部分功能，换句话说lambda所能实现的功能充其量也就是缩水了再缩水版的closure。但是lambda的意义并不仅仅是一种语法糖，因为lambda以及stream对异步编程来说非常友好，这可能会引发一直作为同步编程语言的Java个巨大的改变，这对closure可能同样会是一种促进。*
+目前为止，我们已经可以用`${}`占位符中任意的表达式来进行插值，但是仍有一中特殊的情况就是闭包(Closure)表达式。当占位符中有一个箭头`${->}`，这种表达式实际上是一个闭包表达式——你可以认为它是一个有美元符号前缀的闭包:
+```
+def sParameterLessClosure = "1 + 2 == ${ -> 3 }" ////1.
+assert sParameterLessClosure == '1 + 2 == 3'
+
+def sOneParamClosure = "1 + 2 == ${ w -> w << 3}"////2.
+assert sOneParamClosure == '1 + 2 == 3'
+1.闭包是一个无参数闭包
+2.闭包有一个单独的`java.io.StringWriter`参数，你可以通过`<<`左移操作符添加内容。两种占位符都嵌入了闭包
