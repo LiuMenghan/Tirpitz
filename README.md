@@ -18,27 +18,37 @@ var variables = {
 	date : d.toLocaleDateString()
 };
 engine.render('example.tirpitz', console, variables);
-```
-
-Template files are read by template engine as plain text and save in memory, which makes it having performance problem in product environment if it is used by compiling real-time.
-
-模板引擎会读取模板文件并以文本的形式存储在内存中，因而并不适合在生产环境中实时编译使用。
+```。
 
 ###Initialization 初始化
 
 <table>
-  <th>
-    <td>Attribute 属性</td>
-    <td>Description</td>
-    <td>说明</td>
-  <th>
+  <tr>
+    <th>Attribute 属性</th>
+    <th>Description</th>
+    <th>说明</th>
+  </tr>
   <tr>
     <td>tplPath</td>
-    <td>The template file  pa
-    
+    <td>The template file folder path</td>
+    <td>模板文件存放文件夹路径</td>
+  </tr>
+  <tr>
+    <td>buildPath</td>
+    <td>The path of the folder of files which are built by Tirpitz template engine.</td>
+    <td>模板引擎生成文件的存放文件夹路径。</td>
+  </tr>
+  <tr>
+  	<td>beforeInterceptorsFileNames</td>
+  	<td>The before-interceptor script file path. They will be called in the sequence the same with the sequence in array.</td>
+  	<td>before-interceptor脚本文件路径。模板引擎会按照数组顺序依次调用前before-interceptor。</td>
+  </tr>
+  <tr>
+  	<td>afterInterceptorsFileNames</td>
+  	<td>The after-interceptor script file path. They will be called in the sequence the same with the sequence in array.</td>
+  	<td>afterinterceptor脚本文件路径。模板引擎会按照数组顺序依次调用前after-interceptor。</td>
   </tr>
 </table>
-tplPath : 
 ## Life-cycle
 template files -> before-interceptors -> parser -> after-interceptors -> handlers
 
