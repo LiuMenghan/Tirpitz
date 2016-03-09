@@ -18,10 +18,7 @@ var variables = {
 	date : d.toLocaleDateString()
 };
 engine.render('example.tirpitz', console, variables);
-```。
-
-###Initialization 初始化
-
+```
 <table>
   <tr>
     <th>Attribute 属性</th>
@@ -49,9 +46,24 @@ engine.render('example.tirpitz', console, variables);
   	<td>afterinterceptor脚本文件路径。模板引擎会按照数组顺序依次调用前after-interceptor。</td>
   </tr>
 </table>
+
 ## Life-cycle
-template files -> before-interceptors -> parser -> after-interceptors -> handlers
+template files -> before-interceptors -> parser -> processor -> after-interceptors -> handlers 
 
-### Before-Interceptor 
+1.模板文件会首先被作为文本读取到内存中
+2.before-interceptor会对文本进行前置处理
+3.parser会将文本解析成模板数
+4.遍历模板树，如果发现模板节点可以用processor处理的话就用processor处理
+5.交由after-interceptor对模板数进行后置处理
+6.交由handler输出到控制台/文件/http response
 
-Before-interceptor will firstly due with the saved text.
+## Demo
+### console.js
+输出到控制台。适合用来调试processor/before-interceptor/after-interceptor。
+
+### file.js
+输出到文件，适合将生成的文件使用在生产环境。
+
+### server.js
+输出到http response，适合在开发环境调试模板文件。
+
