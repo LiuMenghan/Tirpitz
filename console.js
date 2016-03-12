@@ -1,3 +1,6 @@
+/**
+ * 输出到控制台 
+ */
 var engine = require('Tirpitz')({
 	tplPath : './tpl',
 	buildPath : './target',
