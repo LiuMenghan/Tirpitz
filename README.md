@@ -1,5 +1,5 @@
 # Tirpitz
-Static template engine based on NodeJS.
+A light extensiable static template engine based on NodeJS.
 
 ## Example
 ```
@@ -50,12 +50,12 @@ engine.render('example.tirpitz', console, variables);
 ## Life-cycle
 template files -> before-interceptors -> parser -> processor -> after-interceptors -> handlers 
 
-1.模板文件会首先被作为文本读取到内存中
-2.before-interceptor会对文本进行前置处理
-3.parser会将文本解析成模板数
-4.遍历模板树，如果发现模板节点可以用processor处理的话就用processor处理
-5.交由after-interceptor对模板数进行后置处理
-6.交由handler输出到控制台/文件/http response
+1. 模板文件会首先被作为文本读取到内存中
+2. before-interceptor会对文本进行前置处理
+3. parser会将文本解析成模板数
+4. 遍历模板树，如果发现模板节点可以用processor处理的话就用processor处理
+5. 交由after-interceptor对模板数进行后置处理
+6. 交由handler输出到控制台/文件/http response
 
 ## Demo
 ### console.js
