@@ -1,5 +1,5 @@
 /**
- * 目前不太server不太稳定，一旦server内部出现错误整个server就挂了，后续可能需要用express之类的重写，待完善
+ * TODO:目前不太server不太稳定，一旦server内部出现错误整个server就挂了，后续可能需要用express之类的重写，待完善
  */
 var http = require('http'); 
 var engine = require('Tirpitz')({
